@@ -12,7 +12,7 @@ def parse_argse():
     parser.add_argument('--dataset_root', type=str,
                         default=None)
     # FlowNet2
-    parser.add_argument('--FlowNet2', action='store_true')
+    parser.add_argument('--FlowNet2', action='store_false')
     parser.add_argument('--pretrained_model_flownet2', type=str,
                         default='./Trained_Models/FlowNet2_checkpoint.pth.tar')
     parser.add_argument('--img_size', type=int, nargs='+',
