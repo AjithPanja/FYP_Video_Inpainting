@@ -6,10 +6,10 @@ import cv2
 import numpy as np
 from mmcv import ProgressBar
 from utils import flow as flo
-
+from models.ConvLstm import ConvLst
 from tools.frame_inpaint import DeepFillv1
 
-
+seq = ConvLstm()
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -187,7 +187,11 @@ def propagation(args, frame_inapint_model=None):
                                         temp6[0],
                                         th=th_warp,
                                         value=-1)[..., 0]
-
+            
+            temp8 = np.expand_dims(temp3, axis=0)
+            temp8 = np.expand_dims(temp8, axis=0)
+            new_pos = seq.predict(temp8.astype(np.float32))
+            
             results[th][..., 0] = temp3
             time_stamp[th][..., 0] = temp4
 
@@ -283,7 +287,12 @@ def propagation(args, frame_inapint_model=None):
                                         temp6[0],
                                         th=th_warp,
                                         value=-1)[..., 1]
-
+            
+            
+            temp8 = np.expand_dims(temp3, axis=0)
+            temp8 = np.expand_dims(temp8, axis=0)
+            new_pos = seq.predict(temp8.astype(np.float32))
+            
             results[th][..., 1] = temp3
             time_stamp[th][..., 1] = temp7
 
