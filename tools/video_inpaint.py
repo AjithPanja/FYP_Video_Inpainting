@@ -25,9 +25,9 @@ def parse_argse():
     parser.add_argument('--PRINT_EVERY', type=int, default=50)
 
     # DFCNet
-    parser.add_argument('--DFC', action='store_true')
-    parser.add_argument('--ResNet101', action='store_true')
-    parser.add_argument('--MS', action='store_true')
+    parser.add_argument('--DFC', action='store_false')
+    parser.add_argument('--ResNet101', action='store_false')
+    parser.add_argument('--MS', action='store_false')
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--n_threads', type=int, default=16)
 
@@ -111,35 +111,34 @@ def flow_completion(args):
     test_initial_stage(args)
     args.flow_root = args.output_root
 
-    if args.MS:
-        args.ResNet101 = False
-        from tools.test_scripts import test_refine_stage
-        args.PRETRAINED_MODEL = args.PRETRAINED_MODEL_2
-        args.IMAGE_SHAPE = [320, 600]
-        args.RES_SHAPE = [320, 600]
-        args.DATA_ROOT = args.output_root
-        args.output_root = os.path.join(args.dataset_root, 'Flow_res', 'stage2_res')
+    args.ResNet101 = False
+    from tools.test_scripts import test_refine_stage
+    args.PRETRAINED_MODEL = args.PRETRAINED_MODEL_2
+    args.IMAGE_SHAPE = [320, 600]
+    args.RES_SHAPE = [320, 600]
+    args.DATA_ROOT = args.output_root
+    args.output_root = os.path.join(args.dataset_root, 'Flow_res', 'stage2_res')
 
-        stage2_data_list = os.path.join(data_list_dir, 'stage2_test_list.txt')
-        from dataset.data_list import gen_flow_refine_test_mask_list
-        gen_flow_refine_test_mask_list(flow_root=args.DATA_ROOT,
-                                       output_txt_path=stage2_data_list)
-        args.EVAL_LIST = stage2_data_list
-        test_refine_stage(args)
+    stage2_data_list = os.path.join(data_list_dir, 'stage2_test_list.txt')
+    from dataset.data_list import gen_flow_refine_test_mask_list
+    gen_flow_refine_test_mask_list(flow_root=args.DATA_ROOT,
+                                   output_txt_path=stage2_data_list)
+    args.EVAL_LIST = stage2_data_list
+    test_refine_stage(args)
 
-        args.PRETRAINED_MODEL = args.PRETRAINED_MODEL_3
-        args.IMAGE_SHAPE = [480, 840]
-        args.RES_SHAPE = [480, 840]
-        args.DATA_ROOT = args.output_root
-        args.output_root = os.path.join(args.dataset_root, 'Flow_res', 'stage3_res')
+    args.PRETRAINED_MODEL = args.PRETRAINED_MODEL_3
+    args.IMAGE_SHAPE = [480, 840]
+    args.RES_SHAPE = [480, 840]
+    args.DATA_ROOT = args.output_root
+    args.output_root = os.path.join(args.dataset_root, 'Flow_res', 'stage3_res')
 
-        stage3_data_list = os.path.join(data_list_dir, 'stage3_test_list.txt')
-        from dataset.data_list import gen_flow_refine_test_mask_list
-        gen_flow_refine_test_mask_list(flow_root=args.DATA_ROOT,
-                                       output_txt_path=stage3_data_list)
-        args.EVAL_LIST = stage3_data_list
-        test_refine_stage(args)
-        args.flow_root = args.output_root
+    stage3_data_list = os.path.join(data_list_dir, 'stage3_test_list.txt')
+    from dataset.data_list import gen_flow_refine_test_mask_list
+    gen_flow_refine_test_mask_list(flow_root=args.DATA_ROOT,
+                                   output_txt_path=stage3_data_list)
+    args.EVAL_LIST = stage3_data_list
+    test_refine_stage(args)
+    args.flow_root = args.output_root
 
 
 def flow_guided_propagation(args):
@@ -155,13 +154,10 @@ def main():
 
     if args.frame_dir is not None:
         args.dataset_root = os.path.dirname(args.frame_dir)
-    if args.FlowNet2:
-        extract_flow(args)
 
-    if args.DFC:
-        flow_completion(args)
+    extract_flow(args)
+    flow_completion(args)
         
-    # set propagation args
     assert args.mask_root is not None or args.MASK_ROOT is not None
     args.mask_root = args.MASK_ROOT if args.mask_root is None else args.mask_root
     args.img_root = args.frame_dir
@@ -170,8 +166,7 @@ def main():
         args.output_root_propagation = os.path.join(args.dataset_root, 'Inpaint_Res')
     if args.img_size is not None:
         args.img_shape = args.img_size
-    if args.Propagation:
-        flow_guided_propagation(args)
+    flow_guided_propagation(args)
 
 
 if __name__ == '__main__':
