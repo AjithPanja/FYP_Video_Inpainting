@@ -14,7 +14,7 @@ def parse_argse():
     # FlowNet2
     parser.add_argument('--FlowNet2', action='store_true')
     parser.add_argument('--pretrained_model_flownet2', type=str,
-                        default='./pretrained_models/FlowNet2_checkpoint.pth.tar')
+                        default='./Trained_Models/FlowNet2_checkpoint.pth.tar')
     parser.add_argument('--img_size', type=int, nargs='+',
                         default=None)
     parser.add_argument('--rgb_max', type=float, default=255.)
@@ -47,11 +47,11 @@ def parse_argse():
                         default=None)
     parser.add_argument('--PRETRAINED_MODEL', type=str, default=None)
     parser.add_argument('--PRETRAINED_MODEL_1', type=str,
-                        default='./pretrained_models/resnet101_movie.pth')
+                        default='./Trained_Models/resnet101_movie.pth')
     parser.add_argument('--PRETRAINED_MODEL_2', type=str,
-                        default=None)
+                        default='./Trained_Models/davis_stage2.pth')
     parser.add_argument('--PRETRAINED_MODEL_3', type=str,
-                        default=None)
+                        default='./Trained_Models/davis_stage3.pth')
     parser.add_argument('--INITIAL_HOLE', action='store_true')
     parser.add_argument('--EVAL_LIST', type=str,
                         default=None)
@@ -73,7 +73,7 @@ def parse_argse():
     parser.add_argument('--output_root_propagation', type=str,
                         default=None)
     parser.add_argument('--pretrained_model_inpaint', type=str,
-                        default='./pretrained_models/imagenet_deepfill.pth')
+                        default='./Trained_Models/imagenet_deepfill.pth')
 
     args = parser.parse_args()
 
@@ -83,11 +83,6 @@ def parse_argse():
 def extract_flow(args):
     from tools.infer_flownet2 import infer
     output_file = infer(args)
-    #flow_list = [x for x in os.listdir(output_file) if '.flo' in x]
-    #flow_start_no = min([int(x[:5]) for x in flow_list])
-
-    #zero_flow = cvb.read_flow(os.path.join(output_file, flow_list[0]))
-    #cvb.write_flow(zero_flow*0, os.path.join(output_file, '%05d.rflo' % flow_start_no))
     args.DATA_ROOT = output_file
 
 

@@ -354,7 +354,7 @@ def propagation(args, frame_inapint_model=None):
     if not os.path.exists(os.path.join(output_root, 'inpaint_res')):
         os.makedirs(os.path.join(output_root, 'inpaint_res'))
 
-    for th in range(0, frames_num-1):
+    for th in range(1, frames_num-1):
         cv2.imwrite(os.path.join(output_root, 'inpaint_res', '%05d.png' % (th)),
                     result_pool[th].astype(np.uint8))
 
