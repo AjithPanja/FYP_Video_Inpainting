@@ -47,7 +47,7 @@ def parse_argse():
                         default=None)
     parser.add_argument('--PRETRAINED_MODEL', type=str, default=None)
     parser.add_argument('--PRETRAINED_MODEL_1', type=str,
-                        default='./Trained_Models/resnet101_movie.pth')
+                        default='./Trained_Models/resnet101_Stage1.pth')
     parser.add_argument('--PRETRAINED_MODEL_2', type=str,
                         default='./Trained_Models/davis_stage2.pth')
     parser.add_argument('--PRETRAINED_MODEL_3', type=str,
