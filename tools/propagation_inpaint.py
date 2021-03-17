@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from mmcv import ProgressBar
 from utils import flow as flo
-from models.ConvLstm import ConvLst
+from models.ConvLstm import ConvLstm
 from tools.frame_inpaint import DeepFillv1
 
 seq = ConvLstm()
