@@ -27,7 +27,7 @@ def parse_argse():
     # DFCNet
     parser.add_argument('--DFC', action='store_false')
     parser.add_argument('--ResNet101', action='store_false')
-    parser.add_argument('--MS', action='store_false')
+    parser.add_argument('--MS', action='store_true')
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--n_threads', type=int, default=16)
 
