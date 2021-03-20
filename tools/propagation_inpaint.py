@@ -6,10 +6,10 @@ import cv2
 import numpy as np
 from mmcv import ProgressBar
 from utils import flow as flo
-from models.ConvLstm import ConvLstm
+
 from tools.frame_inpaint import DeepFillv1
 
-seq = ConvLstm()
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -188,9 +188,7 @@ def propagation(args, frame_inapint_model=None):
                                         th=th_warp,
                                         value=-1)[..., 0]
             
-            temp8 = np.expand_dims(temp3, axis=0)
-            temp8 = np.expand_dims(temp8, axis=0)
-            new_pos = seq.predict(temp8.astype(np.float32))
+            
             
             results[th][..., 0] = temp3
             time_stamp[th][..., 0] = temp4
@@ -289,9 +287,7 @@ def propagation(args, frame_inapint_model=None):
                                         value=-1)[..., 1]
             
             
-            temp8 = np.expand_dims(temp3, axis=0)
-            temp8 = np.expand_dims(temp8, axis=0)
-            new_pos = seq.predict(temp8.astype(np.float32))
+            
             
             results[th][..., 1] = temp3
             time_stamp[th][..., 1] = temp7
@@ -358,14 +354,14 @@ def propagation(args, frame_inapint_model=None):
         print(masked_frame_num)
 
 
-    print('Writing frames to:', os.path.join(output_root, 'inpaint_res'))
+        print('Writing frames to:', os.path.join(output_root, 'inpaint_res'))
 
-    if not os.path.exists(os.path.join(output_root, 'inpaint_res')):
-        os.makedirs(os.path.join(output_root, 'inpaint_res'))
+        if not os.path.exists(os.path.join(output_root, 'inpaint_res')):
+            os.makedirs(os.path.join(output_root, 'inpaint_res'))
 
-    for th in range(1, frames_num-1):
-        cv2.imwrite(os.path.join(output_root, 'inpaint_res', '%05d.png' % (th)),
-                    result_pool[th].astype(np.uint8))
+        for th in range(1, frames_num-1):
+            cv2.imwrite(os.path.join(output_root, 'inpaint_res', '%05d.png' % (th)),
+                        result_pool[th].astype(np.uint8))
 
     print('Propagation has been finished')
     pro_time = time.time() - st_time
