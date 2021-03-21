@@ -85,12 +85,9 @@ def test_initial_stage(args):
                                  drop_last=False,
                                  num_workers=args.n_threads)
 
-    if args.ResNet101:
-        dfc_resnet101 = resnet_models.Flow_Branch(33, 2)
-        dfc_resnet = nn.DataParallel(dfc_resnet101).cuda()
-    else:
-        dfc_resnet50 = resnet_models.Flow_Branch_Multi(input_chanels=33, NoLabels=2)
-        dfc_resnet = nn.DataParallel(dfc_resnet50).cuda()
+    dfc_resnet50 = resnet_models.Flow_Branch_Multi(input_chanels=33, NoLabels=2)
+    print(dfc_resnet50)
+    dfc_resnet = nn.DataParallel(dfc_resnet50).cuda()
 
     dfc_resnet.eval()
     resume_iter = load_ckpt(args.PRETRAINED_MODEL,
@@ -133,12 +130,9 @@ def test_refine_stage(args):
                                  drop_last=False,
                                  num_workers=args.n_threads)
 
-    if args.ResNet101:
-        dfc_resnet101 = resnet_models.Flow_Branch(66, 4)
-        dfc_resnet = nn.DataParallel(dfc_resnet101).cuda()
-    else:
-        dfc_resnet50 = resnet_models.Flow_Branch_Multi(input_chanels=66, NoLabels=4)
-        dfc_resnet = nn.DataParallel(dfc_resnet50).cuda()
+    dfc_resnet50 = resnet_models.Flow_Branch_Multi(input_chanels=66, NoLabels=4)
+    print(dfc_resnet50)
+    dfc_resnet = nn.DataParallel(dfc_resnet50).cuda()
 
     dfc_resnet.eval()
 
