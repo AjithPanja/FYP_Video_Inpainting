@@ -26,7 +26,7 @@ def parse_argse():
 
     # DFCNet
     parser.add_argument('--DFC', action='store_false')
-    parser.add_argument('--ResNet101', action='store_false')
+    parser.add_argument('--ResNet101', action='store_true')
     parser.add_argument('--MS', action='store_false')
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--n_threads', type=int, default=16)
@@ -47,7 +47,7 @@ def parse_argse():
                         default=None)
     parser.add_argument('--PRETRAINED_MODEL', type=str, default=None)
     parser.add_argument('--PRETRAINED_MODEL_1', type=str,
-                        default='./Trained_Models/resnet101_Stage1.pth')
+                        default='./Trained_Models/resnet50_stage1.pth')
     parser.add_argument('--PRETRAINED_MODEL_2', type=str,
                         default='./Trained_Models/davis_stage2.pth')
     parser.add_argument('--PRETRAINED_MODEL_3', type=str,
