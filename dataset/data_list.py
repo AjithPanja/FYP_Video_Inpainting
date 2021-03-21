@@ -42,7 +42,7 @@ def gen_flow_initial_test_mask_list(flow_root, output_txt_path):
           else:
             order_dict[z] = [flow_list[i]]
     order_dict = OrderedDict(sorted(order_dict.items())) 
-    print(order_dict)
+    #print(order_dict)
     order= sum(order_dict.values(),[])
     temp = order[0]
     temp2 = order[-1]
@@ -56,7 +56,7 @@ def gen_flow_initial_test_mask_list(flow_root, output_txt_path):
     order.insert(-1,temp2)
     order.insert(-1,temp2)
     order.insert(-1,temp2)
-    print(order)
+    #print(order)
     list_minus = [-2,-1,1,2]
     for i in range(flow_start_no, len(order) - 10):
         for k in range(11):
@@ -133,7 +133,7 @@ def gen_flow_refine_test_mask_list(flow_root, output_txt_path):
           else:
             order_dict[z] = [flow_list[i]]
     order_dict = OrderedDict(sorted(order_dict.items())) 
-    print(order_dict)
+    #print(order_dict)
     order= sum(order_dict.values(),[])
     temp = order[0]
     temp2 = order[-1]
@@ -147,7 +147,7 @@ def gen_flow_refine_test_mask_list(flow_root, output_txt_path):
     order.insert(-1,temp2)
     order.insert(-1,temp2)
     order.insert(-1,temp2)
-    print(order)
+    #print(order)
     list_minus = [-2,-1,1,2]
     for i in range(flow_start_no, len(order) - 10):
         for k in range(11):
