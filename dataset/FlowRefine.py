@@ -75,15 +75,7 @@ class FlowSeq(data.Dataset):
             tmp_flow = self._flow_tf(tmp_flow)
             gt_flow_set.append(tmp_flow)
 
-        if self.config.MASK_MODE == 'bbox':
-            tmp_bbox = im.random_bbox(self.config)
-            tmp_mask = im.bbox2mask(self.config, tmp_bbox)
-            tmp_mask = tmp_mask[0, 0, :, :]
-            fix_mask = np.expand_dims(tmp_mask, axis=2)
-        elif self.config.MASK_MODE == 'mid-bbox':
-            tmp_mask = im.mid_bbox_mask(self.config)
-            tmp_mask = tmp_mask[0, 0, :, :]
-            fix_mask = np.expand_dims(tmp_mask, axis=2)
+        
 
         f_flow_dir = flow_dir[:11]
         r_flow_dir = flow_dir[11:]
@@ -94,14 +86,7 @@ class FlowSeq(data.Dataset):
                 tmp_mask = cv2.imread(mask_dirs[i],
                                       cv2.IMREAD_UNCHANGED)
                 tmp_mask = self._mask_tf(tmp_mask)
-            else:
-                if self.config.FIX_MASK:
-                    tmp_mask = fix_mask.copy()
-                else:
-                    tmp_bbox = im.random_bbox(self.config)
-                    tmp_mask = im.bbox2mask(self.config, tmp_bbox)
-                    tmp_mask = tmp_mask[0, 0, :, :]
-                    tmp_mask = np.expand_dims(tmp_mask, axis=2)
+            
 
             tmp_flow = self._flow_tf(tmp_flow)
             tmp_flow_masked = tmp_flow
@@ -120,14 +105,7 @@ class FlowSeq(data.Dataset):
                 tmp_mask = cv2.imread(mask_dirs[i+11],
                                       cv2.IMREAD_UNCHANGED)
                 tmp_mask = self._mask_tf(tmp_mask)
-            else:
-                if self.config.FIX_MASK:
-                    tmp_mask = fix_mask.copy()
-                else:
-                    tmp_bbox = im.random_bbox(self.config)
-                    tmp_mask = im.bbox2mask(self.config, tmp_bbox)
-                    tmp_mask = tmp_mask[0, 0, :, :]
-                    tmp_mask = np.expand_dims(tmp_mask, axis=2)
+            
 
             tmp_flow_masked = tmp_flow
 
