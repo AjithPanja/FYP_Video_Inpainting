@@ -60,6 +60,15 @@ class FlowSeq(data.Dataset):
         flow_mask_cat_set = []
         flow_masked_set = []
 
+        if self.config.MASK_MODE == 'bbox':
+            tmp_bbox = im.random_bbox(self.config)
+            tmp_mask = im.bbox2mask(self.config, tmp_bbox)
+            tmp_mask = tmp_mask[0, 0, :, :]
+            fix_mask = np.expand_dims(tmp_mask, axis=2)
+        elif self.config.MASK_MODE == 'mid-bbox':
+            tmp_mask = im.mid_bbox_mask(self.config)
+            tmp_mask = tmp_mask[0, 0, :, :]
+            fix_mask = np.expand_dims(tmp_mask, axis=2)
 
         for i in range(11):
             tmp_flow = cvb.read_flow(flow_dir[i])
@@ -67,10 +76,26 @@ class FlowSeq(data.Dataset):
                 tmp_mask = cv2.imread(mask_dir[i],
                                       cv2.IMREAD_UNCHANGED)
                 tmp_mask = self._mask_tf(tmp_mask)
-            
+            else:
+                if self.config.FIX_MASK:
+                    tmp_mask = fix_mask.copy()
+                else:
+                    tmp_bbox = im.random_bbox(self.config)
+                    tmp_mask = im.bbox2mask(self.config, tmp_bbox)
+                    tmp_mask = tmp_mask[0, 0, :, :]
+                    tmp_mask = np.expand_dims(tmp_mask, axis=2)
             tmp_flow = self._flow_tf(tmp_flow)
             tmp_flow_masked = tmp_flow * (1. - tmp_mask)
 
+            if self.config.INITIAL_HOLE:
+                tmp_flow_resized = cv2.resize(tmp_flow, (self.size[1] // 2, self.size[0] // 2))
+                tmp_mask_resized = cv2.resize(tmp_mask, (self.size[1] // 2, self.size[0] // 2), cv2.INTER_NEAREST)
+                tmp_flow_masked_small = tmp_flow_resized
+                tmp_flow_masked_small[:, :, 0] = rf.regionfill(tmp_flow_resized[:, :, 0], tmp_mask_resized)
+                tmp_flow_masked_small[:, :, 1] = rf.regionfill(tmp_flow_resized[:, :, 1], tmp_mask_resized)
+
+                tmp_flow_masked = tmp_flow_masked + \
+                                  tmp_mask * cv2.resize(tmp_flow_masked_small, (self.size[1], self.size[0]))
 
             flow_masked_set.append(tmp_flow_masked)
             flow_set.append(tmp_flow)
