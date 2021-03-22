@@ -51,7 +51,7 @@ parser.add_argument('--MASK_MODE', type=str, default=None)
 parser.add_argument('--PRETRAINED', action='store_true')
 parser.add_argument('--PRETRAINED_MODEL', type=str, default=None)
 parser.add_argument('--RESNET_PRETRAIN_MODEL', type=str,
-                    default='pretrained_models/models/resnet50-19c8e357.pth')
+                    default='Trained_Models/resnet50_stage1.pth')
 parser.add_argument('--TRAIN_LIST', type=str, default=None)
 parser.add_argument('--EVAL_LIST', type=str, default=None)
 parser.add_argument('--MASK_ROOT', type=str, default=None)
