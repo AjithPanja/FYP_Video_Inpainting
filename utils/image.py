@@ -13,15 +13,19 @@ def random_bbox(args):
     img_shape = args.IMAGE_SHAPE
     img_height = img_shape[0]
     img_width = img_shape[1]
+    VERTICAL_MARGIN = 10
+    MASK_HEIGHT = 120
+    HORIZONTAL_MARGIN = 10
+    MASK_WIDTH = 212
+    maxt = img_height - VERTICAL_MARGIN - MASK_HEIGHT
+    maxl = img_width - HORIZONTAL_MARGIN - MASK_WIDTH
 
-    maxt = img_height - args.VERTICAL_MARGIN - args.MASK_HEIGHT
-    maxl = img_width - args.HORIZONTAL_MARGIN - args.MASK_WIDTH
-
-    t = randint(args.VERTICAL_MARGIN, maxt)
-    l = randint(args.HORIZONTAL_MARGIN, maxl)
-    h = args.MASK_HEIGHT
-    w = args.MASK_WIDTH
+    t = randint(VERTICAL_MARGIN, maxt)
+    l = randint(HORIZONTAL_MARGIN, maxl)
+    h = MASK_HEIGHT
+    w = MASK_WIDTH
     return (t, l, h, w)
+
 
 
 def mid_bbox_mask(args):
@@ -41,17 +45,9 @@ def mid_bbox_mask(args):
 
 
 def bbox2mask(args, bbox):
-    """Generate mask tensor from bbox.
 
-    Args:
-        bbox: configuration tuple, (top, left, height, width)
-        config: Config should have configuration including IMG_SHAPES,
-            MAX_DELTA_HEIGHT, MAX_DELTA_WIDTH.
-
-    Returns:
-        tf.Tensor: output with shape [B, 1, H, W]
-
-    """
+    MAX_DELTA_HEIGHT = 30
+    MAX_DELTA_WIDTH =53
 
     def npmask(bbox, height, width, delta_h, delta_w):
         mask = np.zeros((1, 1, height, width), np.float32)
@@ -66,14 +62,8 @@ def bbox2mask(args, bbox):
     width = img_shape[1]
 
     mask = npmask(bbox, height, width,
-                  args.MAX_DELTA_HEIGHT,
-                  args.MAX_DELTA_WIDTH)
-    # small_mask = cv2.resize(mask[0].transpose(1, 2, 0), (width//8, height//8),
-    #                         interpolation=cv2.INTER_NEAREST)
-    # if len(small_mask.shape) < 3:
-    #     small_mask = np.expand_dims(small_mask, 2)
-    # small_mask = small_mask.transpose(2, 0, 1)
-    # small_mask = np.expand_dims(small_mask, axis=0)
+                  MAX_DELTA_HEIGHT,
+                  MAX_DELTA_WIDTH)
 
     return mask
 
