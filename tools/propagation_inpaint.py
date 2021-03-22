@@ -126,7 +126,7 @@ def propagation(args, frame_inapint_model=None):
 
         results[0][..., 0] = image
         time_stamp[0][label == 0, 0] = 0
-        prog_bar = ProgressBar(frames_num-12)
+        prog_bar = ProgressBar(frames_num-1)
         for th in range(1, frames_num-1):
             prog_bar.update()
             if iter_num == 0:
@@ -229,7 +229,7 @@ def propagation(args, frame_inapint_model=None):
 
         results[frames_num - 1][..., 1] = image
         time_stamp[frames_num - 1][label == 0, 1] = frames_num - 1
-        prog_bar = ProgressBar(frames_num-8)
+        prog_bar = ProgressBar(frames_num-1)
         for th in range(frames_num - 2, 0, -1):
             prog_bar.update()
             if iter_num == 0:
